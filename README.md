@@ -1,0 +1,2 @@
+# wordHunter
+mineração de texto
