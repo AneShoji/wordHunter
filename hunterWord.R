@@ -26,10 +26,6 @@ library(igraph)
 library(pdftools)
 
 
-
-
-
-
 ## ----------------- Opção para aumentar o limite de MB ----------------------------------------- ##
 ##
 ##  1 MB = 1024 KB
@@ -40,12 +36,9 @@ library(pdftools)
 
 options(shiny.maxRequestSize = 10 * 1024 ^ 2)
 
-
 ## ----------------------------------- Tema ----------------------------------------------------- ##
 
 thematic::thematic_shiny() ## plot themes
-
-
 
 ## ---------------------------------------------------------------------------------------------- ##
 ##                                      FUNÇÕES                                                   ##
@@ -65,7 +58,6 @@ validacao <- function(file) {
     return(file)
 }
 
-
 ## ---------------------------------------------------------------------------------------------- ##
 ##  Função de extração do texto do arquivo pdf, utilizando o pacote TM - Text Mining 
 ##  utilizando o método 'readPDF' que utilizam como mecanismo de extração protocolos 
@@ -79,7 +71,6 @@ extracao <- function(caminho, idioma) {
     texto <- leitor(elem = list(uri = caminho), language = language, id = 'id1')
     return(texto)
 }
-
 
 ## ---------------------------------------------------------------------------------------------- ##
 ##  Função que extrai o conteudo do vetor entre as seções Abstract e References, como forma de 
@@ -97,9 +88,7 @@ extracao_conteudo <- function(texto_extraido, idioma){
     }
 }
 
-
 ## --- FUNÇÃO PARA EXTRAIR O CONTEÚDO ENTRE AS PALAVRAS ABSTRACT E REFERENCES --------------------##
-
 
 extracao_conteudo_en <- function(texto_extraido) {
     conteudo <- texto_extraido$content
@@ -202,8 +191,6 @@ extracao_conteudo_pt <- function(texto_extraido) {
     return(conteudo)
 }
 
-
-
 ## ---------------------------------------------------------------------------------------------- ##
 ##  Função que realiza o processamento do texto, limpa o texto: remove stopwords, números, pontuaçào
 ##  espaços de tabulação, novalinha, ..., stopwords, espaços extras em branco.
@@ -211,7 +198,6 @@ extracao_conteudo_pt <- function(texto_extraido) {
 
 
 ## ----------------- VALIDA QUAL O IDIOMA PARA CHAMAR A FUNÇÃO DE PREPROCESSAMENTO ---------------##
-
 preprocessamento <- function(conteudo, idioma){
     if(idioma=="en"){
        return(preprocessamento_en(conteudo)) 
@@ -244,7 +230,6 @@ preprocessamento_en <- function(conteudo) {
 }
 
 ## --------------- PROCESSAMENTO PARA IDIOMA PORTUGUÊS - PT---------------------------------------##
-
 preprocessamento_pt <- function(conteudo) {
     
     vogais <-c("a","as","e","o","os","A","E","O","As","Os","ao","aos","Ao","Aos","-a","-as","-o","-os","ou"
@@ -301,7 +286,6 @@ preprocessamento_pt <- function(conteudo) {
     return(texto)
 }
 
-
 ## ---------------------------------------------------------------------------------------------- ##
 ##  Função que realiza a lematização das palavras com o dicionário lexico.
 ## ---------------------------------------------------------------------------------------------- ##
@@ -312,7 +296,6 @@ lemmatizacaoLex <- function(texto) {
     return(lex_lem)
 }
 
-
 ## ---------------------------------------------------------------------------------------------- ##
 ##  Função que converte o processado - limpo -  e converte em dataframe.
 ## ---------------------------------------------------------------------------------------------- ##
@@ -321,7 +304,6 @@ transformando_dataframe <- function(textoPreProcessado) {
     texto_em_dataframe <- enframe(textoPreProcessado, name = NULL, value = "text")
     return(texto_em_dataframe)
 }
-
 
 ## ---------------------------------------------------------------------------------------------- ##
 ##  Função que realiza o preprocessamento - limpeza e tokenização - do dataframe
@@ -345,7 +327,6 @@ filtragem_palavras <- function(tokens, frequencia) {
     return(palavra_filtrada)
 }
 
-
 ## ---------------------------------------------------------------------------------------------- ##
 ##  Função que realiza a lematização das palavras com o dicionário hunspell
 ## ---------------------------------------------------------------------------------------------- ##
@@ -355,8 +336,6 @@ lemmatizacaoHun <- function(texto) {
     hun_len <- lemmatize_strings(texto, dictionary = lemma_dictionary_hs)
     return(hun_len)
 }
-
-
 
 ## ---------------------------------------------------------------------------------------------- ##
 ##  função para buscar no arquivo os itens de seção
@@ -400,7 +379,6 @@ validarLista <- function(caminho){
     return(condicao)
 }
 
-
 ## ---------------------------------------------------------------------------------------------- ##
 ##  função para extrair o conteudo de palavras entre selecao do usuário 
 ## ---------------------------------------------------------------------------------------------- ##
@@ -429,7 +407,6 @@ extracao_conteudo_titulo <- function(texto_extraido, listaTitulos, titulo1) {
         }
     }
     
-    
     posicao1 <- pos1[1] + 1
     # -- validando o valor da posicao1
     validate(need(!is.null(posicao1), message = "Não foi possível gerar o gráfico, o título da seção selecionado não foi encontrado." ))
@@ -456,8 +433,6 @@ extracao_conteudo_titulo <- function(texto_extraido, listaTitulos, titulo1) {
     conteudo <- conteudo[c(posicao1:posicao2)]
     return(conteudo)
 }
-
-
 
 ## ---------------------------------------------------------------------------------------------- ##
 ##                                           DEFINE UI                                            ##
@@ -542,8 +517,7 @@ ui <- fluidPage(
                                           ,hr()
                                           ,p("Lista de seções: ",textOutput("listasecao", inline = TRUE))
                             ))))  # --- fecha tabpanel sobre info do artigo
-                        
-                        
+                                              
                         ## ---  Gráfico de Palavras  - Usando o dicionário Lexico  --- #
                         ,tabPanel("Gráficos de Palavras - Lexicon"
                             ,br()
@@ -571,8 +545,7 @@ ui <- fluidPage(
                                               type = 8
                                               ,plotOutput("graficoLex", width = "80%", height = "600px"))
                                           ,br(),hr()
-                                          )) # ---fecha fluidrow 
-                            )) # -- tabpanel grafico Lexico
+                                          )))) # -- tabpanel grafico Lexico
                                   
                          # ---  Gráfico de Palavras - usando o dicionário Hunspell  --- #
                         ,tabPanel("Gráficos de Palavras - Hunspell"
@@ -633,9 +606,7 @@ ui <- fluidPage(
                                             
                                             ,plotOutput("ngramsRelacaoPalavras", width = "100%", height = "800px"
                                                         ,dblclick = "ngrams_dblClick", brush = brushOpts( id = "ngrams_brush" ,resetOnNew = TRUE)
-                                                        
-                                                        ))
-                                    )
+                                      )))
                                     
                                     ,br()
                                     ,hr()
@@ -680,26 +651,13 @@ ui <- fluidPage(
                                         ,plotOutput("graficoTitulo", width = "100%", height = "700px"))
                                     ,hr()
                                     ))) # --- tabpanel - informacao por secao/titulo
-                        
-                    
-                    ) # --- fecha tabsetpanel
-            
-                ) # --- fecha coluna
-            
-            ) # --- fecha fluidrow
-            
-        ) # --- fecha coluna 12
-        
-    ) # --- fecha fluidrow
-    
-)  # -- fecha fluidpage
+                    ))))))
 
 ## ---------------------------------------------------------------------------------------------- ##
 ##                                       DEFINE SERVER LOGIC                                      ##
 ## ---------------------------------------------------------------------------------------------- ##
 
 server <- function(input, output, session) {
-    
     
 # ------------------------------------------------------------------------------------------------ #    
 #   a função retorna o caminho temporário do arquivo pdf
@@ -709,7 +667,6 @@ server <- function(input, output, session) {
         filePath <- validacao(input$arquivoPdf$datapath)
         return(filePath)
     })
-    
 
 # ------------------------------------------------------------------------------------------------ #
 #   a função retorna o conteudo extraido - texto e metadados - do arquivo pdf
@@ -720,7 +677,6 @@ server <- function(input, output, session) {
         return(texto_extraido)
     })    
     
-    
 # -----------------------------------------------------------------------------------------------  #
 #   a função retorna o conteúdo extraído do texto, das seções Abstract e References
 # ------------------------------------------------------------------------------------------------ #           
@@ -729,7 +685,6 @@ server <- function(input, output, session) {
         conteudo_extraido <- extracao_conteudo(textoExtraido(),input$idioma)
         return(conteudo_extraido)
     })        
-    
 
 # -----------------------------------------------------------------------------------------------  #
 #   a função retorna o texto processado, limpo dos elementos que não tem relevancia
@@ -738,8 +693,7 @@ server <- function(input, output, session) {
     textoPreprocessado <- reactive({
         texto_preprocessado <- preprocessamento(conteudoExtraido(), input$idioma)
         return(texto_preprocessado)
-    })    
-    
+    })   
         
 # -----------------------------------------------------------------------------------------------  #
 #   processamento do texto limpo, utilizando o dicionário lexicon
@@ -750,22 +704,19 @@ server <- function(input, output, session) {
         texto_lemmatizado <- lemmatizacaoLex(textoPreprocessado())
         return(texto_lemmatizado)
     })
-    
-    
+   
     ##  -- retorna o texto lemmatizado em data frame
     textoDataframeLem <- reactive({
         texto_to_dataframe_lem <- transformando_dataframe(textoLemmatizadoLex())
         return(texto_to_dataframe_lem)
     })
-    
-    
+        
     ##  -- retorna o texto tokenizado com lem
     textoTokenizadoLem <- reactive({
         tokenizacao_texto_lem <- preprocessamento_dataframe(textoDataframeLem())
         return(tokenizacao_texto_lem)
     })
-    
-    
+        
 # -----------------------------------------------------------------------------------------------  #
 #   processamento do texto limpo, utilizando o dicionário hunspell
 # ------------------------------------------------------------------------------------------------ #      
@@ -775,8 +726,6 @@ server <- function(input, output, session) {
         texto_hunspel <- lemmatizacaoHun(textoPreprocessado())
         return(texto_hunspel)
     })
-    
-    
     
     
 # ------------------------------------------------------------------------------------------------ #
@@ -799,8 +748,7 @@ server <- function(input, output, session) {
                        position = position_stack(vjust = 0.5))
 
     })
-    
-    
+        
 # ------------------------------------------------------------------------------------------------ #    
 #   output do gráfico utilizando o dicionário hunspell
 # ------------------------------------------------------------------------------------------------ #  
@@ -817,7 +765,6 @@ server <- function(input, output, session) {
                        size=6,position = position_stack(vjust = 0.5))
     })
     
-
 # ------------------------------------------------------------------------------------------------ #    
 #   nuvem de plavras
 # ------------------------------------------------------------------------------------------------ #          
@@ -827,15 +774,13 @@ server <- function(input, output, session) {
         nuvem <- wordcloud2(palavras_filtradas, size = 1, color = "random-light",
                             backgroundColor = "white")
     })
-    
-    
+        
 # ------------------------------------------------------------------------------------------------ #    
 #   Associacoa de palavras 
 # ------------------------------------------------------------------------------------------------ #         
     
     ranges <- reactiveValues(x = NULL, y = NULL)
-    
-    
+        
     output$ngramsRelacaoPalavras <- renderPlot({
         bigram_counts <- textoDataframeLem() %>%
             unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
@@ -855,8 +800,7 @@ server <- function(input, output, session) {
             coord_cartesian(xlim = ranges$x, ylim = ranges$y, expand = FALSE)+
             theme_graph(background = "grey98")
     })
-    
-    
+        
 # ------------------------------------------------------------------------------------------------ #    
 #    ZOOM -- When a double-click happens, check if there's a brush on the plot.
 #    If so, zoom to the brush bounds; if not, reset the zoom.
@@ -874,27 +818,9 @@ server <- function(input, output, session) {
         }
     })
     
-    
 # ------------------------------------------------------------------------------------------------ #    
 #   Informação por seção  
 # ------------------------------------------------------------------------------------------------ #      
-
-    
-    page_to_show <- reactiveVal("div$6")
-    
-    output$page_to_show <- reactive(page_to_show())
-    
-    outputOptions(output, "page_to_show", suspendWhenHidden = FALSE)
-    
-    observeEvent(input$arquivoPdf, {
-        page_to_show("div$6.")
-    })
-    
-    observeEvent(input$arquivoPdf, {
-        page_to_show("PageEn")
-    })
-    
-    
     
 ## -------------------------------- lista de titulos do arquivo ---------------------------------- #
     listaOpcao <- reactive({
@@ -915,10 +841,7 @@ server <- function(input, output, session) {
     
     output$noButton <- renderText({"Não foi possivel exibir os titulos do artigo"})
 
-    
-
 # ---------------------------- grafico por secao ------------------------------------------------- #
-    
     observeEvent(input$button, {
         output$graficoTitulo <- renderPlot({
             conteudoTitulo <- extracao_conteudo_titulo(textoExtraido(), listaOpcao(), input$selectBox)
@@ -987,7 +910,6 @@ server <- function(input, output, session) {
         return(info$Pages)
     })
     
-    
 # -----------------------------------------------------------------------------------------------  #
 #   a função retorna o o idioma selecionado 
 # ------------------------------------------------------------------------------------------------ #                  
@@ -996,7 +918,6 @@ server <- function(input, output, session) {
         return(input$idioma)
     })    
     
-
 # -----------------------------------------------------------------------------------------------  #
 #   a função retorna o keywords do arquivo 
 # ------------------------------------------------------------------------------------------------ #  
@@ -1021,8 +942,7 @@ server <- function(input, output, session) {
 # -----------------------------------------------------------------------------------------------  #
 #   a função retorna o creator do arquivo 
 # ------------------------------------------------------------------------------------------------ # 
-    
-    
+        
     output$creator <- renderText({
         infoP <- pdftools::pdf_info(caminhoArquivo())
         infoR <- Rpoppler::PDF_info(caminhoArquivo())
@@ -1040,37 +960,29 @@ server <- function(input, output, session) {
         }
     })   
     
-    
-    # subject <- info_pdf$Subject
-    
 # -----------------------------------------------------------------------------------------------  #
 #   a função retorna o assunto  e outros topicos de páginas do arquivo 
 # ------------------------------------------------------------------------------------------------ #       
-    
     
     output$subject <- renderText({
         info <- Rpoppler::PDF_info(caminhoArquivo())
         return(info$Subject)
     })
     
-    
     output$cmd1 <- renderText({
         infoP <- pdftools::pdf_info(caminhoArquivo())
         return(infoP$keys$`CrossMarkDomains[1]`)
     })
-    
     
     output$cmd2 <- renderText({
         infoP <- pdftools::pdf_info(caminhoArquivo())
         return(infoP$keys$`CrossMarkDomains[2]`)
     })
     
-    
     output$doi <- renderText({
         infoP <- pdftools::pdf_info(caminhoArquivo())
         return(infoP$keys$doi)
     })
-
     
 # -----------------------------------------------------------------------------------------------  #
 #   a função retorna texto sobre a validação de conteudo na lista de seções
@@ -1090,17 +1002,11 @@ server <- function(input, output, session) {
 # -----------------------------------------------------------------------------------------------  #
 #   a função para atualizar a pagina
 # ------------------------------------------------------------------------------------------------ #        
-    
-    
+        
     observeEvent(input$limpar, {
         refresh()
     })
-  
-    
-    
-    
-    
-    
+      
 }
 
 ## ---------------------------------------------------------------------------------------------- ##
