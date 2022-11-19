@@ -742,12 +742,12 @@ server <- function(input, output, session) {
 
         ggplot(palavras_filtradas) +
             geom_col(aes(x = frequency, y = word, fill = frequency, group = frequency)) +
-            geom_label(aes(x = frequency, y = word, label = frequency), size = 6) +
+            geom_label(aes(x = frequency, y = word, label = frequency), size = 3) +
             labs(x = "Frequência", y = "Palavras") +
-            geom_label(aes(x = frequency, y = word, label = word), size = 6,
+            geom_label(aes(x = frequency, y = word, label = word), size = 3,
                        position = position_stack(vjust = 0.5))
 
-    })
+    }, res = 141)
         
 # ------------------------------------------------------------------------------------------------ #    
 #   output do gráfico utilizando o dicionário hunspell
@@ -759,11 +759,11 @@ server <- function(input, output, session) {
         palavras_filtradas <- filtragem_palavras(tokenizacao_textoh, input$qtdNHun)
         ggplot(palavras_filtradas)+
             geom_col(aes(x=frequency, y=word, fill=frequency, group=frequency))+
-            geom_label(aes(x=frequency, y=word, label=frequency),size=6)+
+            geom_label(aes(x=frequency, y=word, label=frequency),size=3)+
             labs(x="Frequência", y="Palavras")+
             geom_label(aes(x=frequency, y=word, label=word),
-                       size=6,position = position_stack(vjust = 0.5))
-    })
+                       size=3,position = position_stack(vjust = 0.5))
+    }, res = 141)
     
 # ------------------------------------------------------------------------------------------------ #    
 #   nuvem de plavras
@@ -852,11 +852,11 @@ server <- function(input, output, session) {
             palavras_filtradas <- filtragem_palavras(textoTokenizadoLem, input$qtdNLexSec)
             ggplot(palavras_filtradas) +
                 geom_col(aes(x = frequency, y = word, fill = frequency, group = frequency)) +
-                geom_label(aes(x = frequency, y = word, label = frequency), size = 6) +
+                geom_label(aes(x = frequency, y = word, label = frequency), size = 3) +
                 labs(x = "Frequência", y = "Palavras") +
-                geom_label(aes(x = frequency, y = word, label = word),size = 6,
+                geom_label(aes(x = frequency, y = word, label = word),size = 3,
                            position = position_stack(vjust = 0.5))
-        })
+        }, res = 141)
     })
     
 # -----------------------------------------------------------------------------------------------  #
